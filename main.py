@@ -433,15 +433,24 @@ def nuevaPublicacion():
     categoria = request.json['categoria']
     author = request.json['author']
     urlTemp = request.json['url']
-    arg = urlTemp.split(sep='/')
-    url = arg[0]+'//www.youtube.com'+'/embed/'+arg[3]
-    print(url)
-    date = datetime.today().strftime('%d/%m/%Y')
-    nuevo = Publicacion(contadorPublicaciones, tipo,
-                                categoria, author, url, date)
-    contadorPublicaciones=contadorPublicaciones+1
-    Publicaciones.append(nuevo)
-    return jsonify({
+    if (tipo=="image"):
+        url = urlTemp
+        date = datetime.today().strftime('%d/%m/%Y')
+        nuevo = Publicacion(contadorPublicaciones, tipo,categoria, author, url, date)
+        contadorPublicaciones=contadorPublicaciones+1
+        Publicaciones.append(nuevo)
+        return jsonify({
+            'message':'060',
+            'reason':'Publicacion Guardada'
+        })
+    else:
+        arg = urlTemp.split(sep='/')
+        url = arg[0]+'//www.youtube.com'+'/embed/'+arg[3]
+        date = datetime.today().strftime('%d/%m/%Y')
+        nuevo = Publicacion(contadorPublicaciones, tipo,categoria, author, url, date)
+        contadorPublicaciones=contadorPublicaciones+1
+        Publicaciones.append(nuevo)
+        return jsonify({
             'message':'060',
             'reason':'Publicacion Guardada'
         })
